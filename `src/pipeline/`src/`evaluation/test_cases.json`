@@ -1,0 +1,10 @@
+{
+  "accuracy_threshold": 0.95,
+  "max_repair_attempts": 3,
+  "validation_rules": [
+    "ui_schema_required",
+    "api_schema_required", 
+    "db_schema_required"
+  ],
+  "test_coverage_target": 0.80
+}
