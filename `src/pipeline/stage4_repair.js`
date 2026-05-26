@@ -1,0 +1,37 @@
+import Ajv from 'ajv';
+import { OpenAI } from 'openai';
+
+const ajv = new Ajv({ allErrors: true });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+export async function validateAndRepair(schema, base44Schema, maxRetries = 3) {
+  const validate = ajv.compile(base44Schema);
+  let currentSchema = schema;
+  let retries = 0;
+
+  while (retries < maxRetries) {
+    const valid = validate(currentSchema);
+    if (valid) return { success: true, schema: currentSchema, retries };
+
+    const errors = validate.errors;
+    console.log(`Validation failed. Attempt ${retries + 1}. Errors:`, errors);
+
+    const repairPrompt = `
+Fix this JSON schema to match Base44 spec.
+Errors: ${JSON.stringify(errors)}
+Current Schema: ${JSON.stringify(currentSchema)}
+Return ONLY valid JSON, no explanation.
+`;
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: repairPrompt }],
+      response_format: { type: "json_object" }
+    });
+
+    currentSchema = JSON.parse(response.choices[0].message.content);
+    retries++;
+  }
+
+  throw new Error('SchemaGenerationError: Max retries exceeded');
+}
