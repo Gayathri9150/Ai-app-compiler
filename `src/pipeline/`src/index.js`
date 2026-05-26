@@ -1,0 +1,29 @@
+import { validateAndRepair } from './pipeline/stage4_repair.js';
+import 'dotenv/config';
+
+const BASE44_SCHEMA = {
+  type: "object",
+  properties: {
+    ui_schema: { type: "object" },
+    api_schema: { type: "object" },
+    db_schema: { type: "object" }
+  },
+  required: ["ui_schema", "api_schema", "db_schema"]
+};
+
+async function main() {
+  const testSchema = {
+    ui_schema: {},
+    api_schema: {},
+    db_schema: {}
+  };
+
+  try {
+    const result = await validateAndRepair(testSchema, BASE44_SCHEMA);
+    console.log('Success:', result);
+  } catch (error) {
+    console.error('Failed:', error.message);
+  }
+}
+
+main();
