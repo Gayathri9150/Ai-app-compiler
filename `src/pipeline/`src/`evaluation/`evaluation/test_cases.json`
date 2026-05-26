@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Basic CRUD App",
+    "prompt": "Build a todo app with React frontend, Node.js API, and Postgres DB",
+    "expected_artifacts": ["ui_schema.json", "api_schema.json", "db_schema.sql"]
+  },
+  {
+    "name": "Auth Required", 
+    "prompt": "Create a blog with user login using JWT",
+    "expected_artifacts": ["ui_schema.json", "api_schema.json", "db_schema.sql", "auth_middleware.js"]
+  }
+]
