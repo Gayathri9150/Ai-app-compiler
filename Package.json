@@ -1,0 +1,14 @@
+{
+  "name": "ai-app-compiler",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node src/index.js",
+    "eval": "node evaluation/run_eval.js"
+  },
+  "dependencies": {
+    "openai": "^4.55.0",
+    "ajv": "^8.17.1",
+    "dotenv": "^16.4.5"
+  }
+}
